@@ -15,33 +15,35 @@ function ChatInput() {
       message: "Hello, I'm ChatFPT! Ask me anything!",
       sentTime: "just now",
       sender: "ChatFPT",
+      direction: "incoming", 
     },
   ]);
   const [isTyping, setIsTyping] = useState(false);
-  const [message, setMessage] = useState("");
 
-  const handleChange = (event) => {
-    if (event && event.target) {
-      setMessage(event.target.value);
-    }
-  };
   const handleSend = (message) => {
     if (message.trim()) {
       const newMessage = {
         message,
-        direction: "outgoing",
+        direction: "outgoing",  
         sender: "user",
       };
 
       const newMessages = [...messages, newMessage];
       setMessages(newMessages);
-      setMessage("");
       setIsTyping(true);
     }
   };
 
   return (
-    <div style={{ position: "relative", height: "800px", width: "700px" }}>
+    <div
+      style={{
+        position: "relative",
+        height: "100vh",  
+        display: "flex",
+        justifyContent: "center",  
+        alignItems: "center",  
+      }}
+    >
       <MainContainer>
         <ChatContainer>
           <MessageList
@@ -50,11 +52,11 @@ function ChatInput() {
               isTyping ? <TypingIndicator content="ChatFPT is typing" /> : null
             }
           >
-            {messages.map((message, i) => {
-              return <Message key={i} model={message} />;
-            })}
+            {messages.map((message, i) => (
+              <Message key={i} model={message} />
+            ))}
           </MessageList>
-          <MessageInput onSend={handleSend} placeholder="Type message here" />
+          <MessageInput placeholder="Type message here" onSend={handleSend} />
         </ChatContainer>
       </MainContainer>
     </div>
