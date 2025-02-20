@@ -15,7 +15,7 @@ function ChatInput() {
       message: "Hello, I'm ChatFPT! Ask me anything!",
       sentTime: "just now",
       sender: "ChatFPT",
-      direction: "incoming",  // ChatFPT's message on the left
+      direction: "incoming", 
     },
   ]);
   const [isTyping, setIsTyping] = useState(false);
@@ -24,7 +24,7 @@ function ChatInput() {
     if (message.trim()) {
       const newMessage = {
         message,
-        direction: "outgoing",  // User's message on the right
+        direction: "outgoing",  
         sender: "user",
       };
 
@@ -38,10 +38,10 @@ function ChatInput() {
     <div
       style={{
         position: "relative",
-        height: "100vh",  // Full screen height
+        height: "100vh",  
         display: "flex",
-        justifyContent: "center",  // Center horizontally
-        alignItems: "center",  // Center vertically
+        justifyContent: "center",  
+        alignItems: "center",  
       }}
     >
       <MainContainer>
