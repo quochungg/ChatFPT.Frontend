@@ -1,66 +1,15 @@
-import React, { useState } from "react";
-import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
-import {
-  MainContainer,
-  ChatContainer,
-  MessageList,
-  Message,
-  TypingIndicator,
-  MessageInput,
-} from "@chatscope/chat-ui-kit-react";
+import React from "react";
 
-function ChatInput() {
-  const [messages, setMessages] = useState([
-    {
-      message: "Hello, I'm ChatFPT! Ask me anything!",
-      sentTime: "just now",
-      sender: "ChatFPT",
-      direction: "incoming", 
-    },
-  ]);
-  const [isTyping, setIsTyping] = useState(false);
-
-  const handleSend = (message) => {
-    if (message.trim()) {
-      const newMessage = {
-        message,
-        direction: "outgoing",  
-        sender: "user",
-      };
-
-      const newMessages = [...messages, newMessage];
-      setMessages(newMessages);
-      setIsTyping(true);
-    }
-  };
-
+const ChatInput = () => {
   return (
-    <div
-      style={{
-        position: "relative",
-        height: "100vh",  
-        display: "flex",
-        justifyContent: "center",  
-        alignItems: "center",  
-      }}
-    >
-      <MainContainer>
-        <ChatContainer>
-          <MessageList
-            scrollBehavior="smooth"
-            typingIndicator={
-              isTyping ? <TypingIndicator content="ChatFPT is typing" /> : null
-            }
-          >
-            {messages.map((message, i) => (
-              <Message key={i} model={message} />
-            ))}
-          </MessageList>
-          <MessageInput placeholder="Type message here" onSend={handleSend} />
-        </ChatContainer>
-      </MainContainer>
+    <div className="text-center mt-5">
+      <h2>Tôi có thể giúp gì cho bạn?</h2>
+      <div className="input-group mt-3 w-50 mx-auto">
+        <input type="text" className="form-control form-control-lg" placeholder="Nhắn tin cho ChatGPT" />
+        <button className="btn btn-primary">Gửi</button>
+      </div>
     </div>
   );
-}
+};
 
 export default ChatInput;
