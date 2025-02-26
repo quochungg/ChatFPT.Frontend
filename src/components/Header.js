@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { auth, provider, signInWithPopup, signOut } from "../firebaseConfig";
+// Chọn icon mới ở đây
+import { HiMenuAlt3 } from "react-icons/hi";  
+import "./Header.css";
 
-const Header = () => {
+const Header = ({ toggleSidebar }) => {
   const [user, setUser] = useState(null);
 
   const handleLogin = async () => {
@@ -20,12 +23,17 @@ const Header = () => {
   };
 
   return (
-    <header className="d-flex justify-content-between align-items-center p-3 border-bottom">
-      <h3>ChatFPT</h3>
+    <header className="chat-header">
+      <div className="left-section">
+        {/* Thay đổi icon mở Sidebar */}
+        <HiMenuAlt3 className="sidebar-toggle" onClick={toggleSidebar} />
+        <h3 className="chat-title">ChatFPT</h3>
+      </div>
+
       <div>
         {user ? (
-          <div className="d-flex align-items-center">
-            <img src={user.photoURL} alt="Avatar" className="rounded-circle me-2" width="40" height="40" />
+          <div className="user-info">
+            <img src={user.photoURL} alt="Avatar" className="user-avatar" />
             <span>{user.displayName}</span>
             <button className="btn btn-danger ms-3" onClick={handleLogout}>
               Đăng xuất

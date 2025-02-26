@@ -1,0 +1,37 @@
+.chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    border-bottom: 1px solid #ddd;
+    background: #fff;
+  }
+  
+  .left-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .chat-title {
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 2px;
+  }
+  
+  .sidebar-toggle {
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
