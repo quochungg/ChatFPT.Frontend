@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { auth, provider, signInWithPopup, signOut } from "../firebaseConfig";
-// Chọn icon mới ở đây
-import { HiMenuAlt3 } from "react-icons/hi";  
+import { HiMenuAlt3 } from "react-icons/hi";
 import "./Header.css";
 
 const Header = ({ toggleSidebar }) => {
   const [user, setUser] = useState(null);
+  const [darkMode, setDarkMode] = useState(false);
 
   const handleLogin = async () => {
     try {
@@ -22,10 +22,21 @@ const Header = ({ toggleSidebar }) => {
     setUser(null);
   };
 
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+  }, [darkMode]);
+
   return (
     <header className="chat-header">
       <div className="left-section">
-        {/* Thay đổi icon mở Sidebar */}
         <HiMenuAlt3 className="sidebar-toggle" onClick={toggleSidebar} />
         <h3 className="chat-title">ChatFPT</h3>
       </div>
