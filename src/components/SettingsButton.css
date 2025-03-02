@@ -1,0 +1,83 @@
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+
+.header {
+  background-color: #ffffff; 
+  color: #333; 
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+body.dark-mode .header {
+  background-color: #333; 
+  color: #f1f1f1; 
+}
+
+.settings-container {
+  position: relative;
+}
+
+.settings-button {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: #212529;
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.settings-button:hover {
+  background-color: #444;
+}
+
+.settings-pop-up {
+  position: fixed;
+  top: 507px;
+  left: 10px;
+  background-color: #ffffff;
+  color: #333;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  width: 220px;
+  z-index: 1000;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode .settings-pop-up {
+  background-color: #333;
+  color: #f1f1f1;
+}
+
+.settings-pop-up ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.settings-pop-up li {
+  padding: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.settings-pop-up li:hover {
+  background-color: #ddd;
+}
+
+body.dark-mode .settings-pop-up li:hover {
+  background-color: #444;
+}
