@@ -5,7 +5,7 @@ const ThemeProvider = ({ children }) => {
   
   const [darkMode, setDarkMode] = useState(false);
 
-  
+ 
   const toggleDarkMode = () => {
     setDarkMode((prev) => !prev);
   };
