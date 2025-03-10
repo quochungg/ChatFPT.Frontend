@@ -5,6 +5,7 @@ import "./Header.css";
 
 const Header = ({ toggleSidebar }) => {
   const [user, setUser] = useState(null);
+  const [darkMode, setDarkMode] = useState(false);
 
   // Kiểm tra nếu đã có token trong localStorage
   useEffect(() => {
@@ -67,6 +68,18 @@ const Header = ({ toggleSidebar }) => {
       console.error("Lỗi API:", error);
     }
   };
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+  }, [darkMode]);
 
   return (
     <header className="chat-header">

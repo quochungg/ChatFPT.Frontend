@@ -1,37 +1,66 @@
+
 .chat-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 20px;
-    border-bottom: 1px solid #ddd;
-    background: #fff;
-  }
-  
-  .left-section {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .chat-title {
-    font-size: 25px;
-    font-weight: bold;
-    margin-top: 2px;
-  }
-  
-  .sidebar-toggle {
-    font-size: 24px;
-    cursor: pointer;
-  }
-  
-  .user-info {
-    display: flex;
-    align-items: center;
-  }
-  
-  .user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-  }
-  
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid #ddd;
+  background: #fff;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-title {
+  font-size: 25px;
+  font-weight: bold;
+  margin-top: 2px;
+  color: #333;
+}
+
+.sidebar-toggle {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+
+body.dark-mode .chat-header {
+  background: #121212; 
+  color: #f1f1f1; 
+  border-bottom: 1px solid #444; 
+}
+
+body.dark-mode .chat-title {
+  color: #f1f1f1; 
+}
+
+body.dark-mode .sidebar-toggle {
+  color: #f1f1f1; 
+}
+
+body.dark-mode .user-info button {
+  background-color: #444;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+body.dark-mode .user-info button:hover {
+  background-color: #666;
+}
