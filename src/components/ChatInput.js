@@ -8,6 +8,7 @@ const ChatInput = () => {
     { text: "Hello, I'm ChatFPT! Ask me anything!", sender: "bot" },
   ]);
   const [message, setMessage] = useState("");
+  const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
   const messageListRef = useRef(null);
   const textareaRef = useRef(null);
 
@@ -26,7 +27,8 @@ const ChatInput = () => {
   }, [message]);
 
   const handleSendInitial = () => {
-    if (message.trim()) {
+    if (message.trim() && !isWaitingForResponse) {
+      setIsWaitingForResponse(true);
       setMessages((prev) => [...prev, { text: message, sender: "user" }]);
       setMessage("");
       setShowChat(true);
@@ -36,12 +38,14 @@ const ChatInput = () => {
           ...prev,
           { text: "This is an auto-reply from ChatFPT!", sender: "bot" },
         ]);
+        setIsWaitingForResponse(false);
       }, 1000);
     }
   };
 
   const handleSendChat = () => {
-    if (message.trim()) {
+    if (message.trim() && !isWaitingForResponse) {
+      setIsWaitingForResponse(true);
       setMessages((prev) => [...prev, { text: message, sender: "user" }]);
       setMessage("");
 
@@ -50,6 +54,7 @@ const ChatInput = () => {
           ...prev,
           { text: "This is an auto-reply from ChatFPT!", sender: "bot" },
         ]);
+        setIsWaitingForResponse(false);
       }, 1000);
     }
   };
@@ -79,8 +84,15 @@ const ChatInput = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleKeyDown}
+              disabled={isWaitingForResponse}
             />
-            <button className="send-button" onClick={handleSendInitial}>
+            <button
+              className={`send-button ${
+                isWaitingForResponse ? "disabled" : ""
+              }`}
+              onClick={handleSendInitial}
+              disabled={isWaitingForResponse}
+            >
               <FaPaperPlane />
             </button>
           </div>
@@ -88,7 +100,7 @@ const ChatInput = () => {
       ) : (
         <>
           <h2 className="chat-heading">ChatFPT</h2>
-          <div className="chat-message-list" ref={messageListRef}>
+          <div className="chat-message-list scrollable" ref={messageListRef}>
             {messages.map((msg, index) => {
               const bubbleClass =
                 msg.sender === "user" ? "user-bubble" : "bot-bubble";
@@ -102,18 +114,36 @@ const ChatInput = () => {
                 </div>
               );
             })}
+            {isWaitingForResponse && (
+              <div className="chat-message-bubble bot-bubble typing-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            )}
           </div>
           <div className="chat-input-wrapper" style={{ marginTop: "20px" }}>
             <textarea
               ref={textareaRef}
               className="chat-textarea"
-              placeholder="Hỏi bất kỳ điều gì..."
+              placeholder={
+                isWaitingForResponse
+                  ? "Đang chờ phản hồi..."
+                  : "Hỏi bất kỳ điều gì..."
+              }
               rows="1"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleKeyDown}
+              disabled={isWaitingForResponse}
             />
-            <button className="send-button" onClick={handleSendChat}>
+            <button
+              className={`send-button ${
+                isWaitingForResponse ? "disabled" : ""
+              }`}
+              onClick={handleSendChat}
+              disabled={isWaitingForResponse}
+            >
               <FaPaperPlane />
             </button>
           </div>
