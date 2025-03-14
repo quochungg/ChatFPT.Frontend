@@ -93,7 +93,6 @@ const Header = ({ toggleSidebar }) => {
         {user ? (
           <div className="user-info">
             <img src={user.photoURL} alt="Avatar" className="user-avatar" />
-            <span>{user.displayName}</span>
             <button className="btn btn-danger ms-3" onClick={handleLogout}>
               Đăng xuất
             </button>
