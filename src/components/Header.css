@@ -39,32 +39,6 @@
   border-radius: 50%;
 }
 
-
-body.dark-mode .chat-header {
-  background: #121212; 
-  color: #f1f1f1; 
-  border-bottom: 1px solid #444; 
-}
-
-body.dark-mode .chat-title {
-  color: #f1f1f1; 
-}
-
-body.dark-mode .sidebar-toggle {
-  color: #f1f1f1; 
-}
-
-body.dark-mode .user-info button {
-  background-color: #444;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-body.dark-mode .user-info button:hover {
-  background-color: #666;
-}
-
 .google-login-btn {
   display: flex;
   align-items: center;
