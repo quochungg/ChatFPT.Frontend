@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { auth, provider, signInWithPopup, signOut } from "../firebaseConfig";
 import { HiMenuAlt3 } from "react-icons/hi";
 import "./Header.css";
+import { FcGoogle } from "react-icons/fc";
 
 const Header = ({ toggleSidebar }) => {
   const [user, setUser] = useState(null);
@@ -98,8 +99,9 @@ const Header = ({ toggleSidebar }) => {
             </button>
           </div>
         ) : (
-          <button className="btn btn-dark" onClick={handleLogin}>
-            Đăng nhập với Google
+          <button className="google-login-btn" onClick={handleLogin}>
+            <FcGoogle size={20}/>
+            Đăng nhập
           </button>
         )}
       </div>
