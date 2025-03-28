@@ -3,12 +3,13 @@ import { auth, provider, signInWithPopup, signOut } from "../firebaseConfig";
 import { HiMenuAlt3 } from "react-icons/hi";
 import "./Header.css";
 import { FcGoogle } from "react-icons/fc";
+import { FaSignOutAlt } from "react-icons/fa";  // Import icon "sign out"
 
 const Header = ({ toggleSidebar }) => {
   const [user, setUser] = useState(null);
-  const [darkMode, setDarkMode] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
 
-  // Kiểm tra nếu đã có token trong localStorage
+  // Kiểm tra người dùng khi trang được load
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -20,18 +21,11 @@ const Header = ({ toggleSidebar }) => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      const idToken = await user.getIdToken(); // Lấy token
+      const idToken = await user.getIdToken();
 
       setUser(user);
-      console.log("ID Token:", idToken);
-
-      // Lưu vào localStorage
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("token", idToken);
-
-      // Gửi token về backend ngay sau khi đăng nhập
-      await sendTokenToBackend(idToken);
-
     } catch (error) {
       console.error("Lỗi đăng nhập:", error);
     }
@@ -43,44 +37,10 @@ const Header = ({ toggleSidebar }) => {
         setUser(null);
         localStorage.removeItem("user");
         localStorage.removeItem("token");
+        setShowDropdown(false); // Ẩn dropdown khi đăng xuất
       })
       .catch((error) => console.error("Lỗi đăng xuất:", error));
   };
-
-  // Gửi token tới backend
-  const sendTokenToBackend = async (token) => {
-    try {
-      const response = await fetch("https://your-backend-api.com/api/authenticate", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,  // Gửi token trong header Authorization
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token: token,  // Nếu backend cần token trong body, có thể thêm vào đây
-        }),
-      });
-
-      if (!response.ok) throw new Error("Lỗi khi gửi token");
-
-      const data = await response.json();
-      console.log("Backend Response:", data);
-    } catch (error) {
-      console.error("Lỗi API:", error);
-    }
-  };
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
-
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add("dark-mode");
-    } else {
-      document.body.classList.remove("dark-mode");
-    }
-  }, [darkMode]);
 
   return (
     <header className="chat-header">
@@ -89,19 +49,32 @@ const Header = ({ toggleSidebar }) => {
         <h3 className="chat-title">ChatFPT</h3>
       </div>
 
-      <div>
+      <div className="user-info">
         {user ? (
-          <div className="user-info">
+          <div
+            className="avatar-wrapper"
+            onClick={() => setShowDropdown(!showDropdown)}
+          >
             <img src={user.photoURL} alt="Avatar" className="user-avatar" />
-            <button className="btn btn-danger ms-3" onClick={handleLogout}>
-              Đăng xuất
-            </button>
           </div>
         ) : (
           <button className="google-login-btn" onClick={handleLogin}>
-            <FcGoogle size={20}/>
+            <FcGoogle size={20} />
             Đăng nhập
           </button>
+        )}
+
+        {showDropdown && (
+          <div className="dropdown-menu">
+            <ul>
+              <li>
+                <button onClick={handleLogout}>
+                  <FaSignOutAlt size={16} style={{ marginRight: "8px" }} />
+                  Đăng xuất
+                </button>
+              </li>
+            </ul>
+          </div>
         )}
       </div>
     </header>
