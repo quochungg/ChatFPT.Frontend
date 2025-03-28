@@ -18,7 +18,6 @@ const ChatInput = () => {
   const messageListRef = useRef(null);
   const textareaRef = useRef(null);
 
-  // Predefined feedback options
   const feedbackOptions = [
     "Code was incorrect",
     "Shouldn't have used Memory",
@@ -46,53 +45,48 @@ const ChatInput = () => {
     }
   }, [message]);
 
-  const handleSendInitial = () => {
-    if (message.trim() && !isWaitingForResponse) {
-      setIsWaitingForResponse(true);
-      setMessages((prev) => [...prev, { text: message, sender: "user" }]);
-      setMessage("");
-      setShowChat(true);
+  const fetchBotResponse = async (userMessage) => {
+    try {
+      const response = await fetch(
+        `https://chatfpt.azurewebsites.net/api/ai/query?question=${encodeURIComponent(
+          userMessage
+        )}`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "*/*",
+          },
+        }
+      );
 
-      // Simulate bot response
-      setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          { text: "This is an auto-reply from ChatFPT!", sender: "bot" },
-        ]);
-        setIsWaitingForResponse(false);
-        setShowRating(true);
-      }, 1000);
+      const text = await response.text();
+      return text;
+    } catch (error) {
+      console.error("Error fetching response:", error);
+      return "Đã có lỗi xảy ra. Vui lòng thử lại sau.";
     }
   };
 
-  const handleSendChat = () => {
+  const sendMessage = async () => {
     if (message.trim() && !isWaitingForResponse) {
       setIsWaitingForResponse(true);
-      setShowRating(false);
-      setShowFeedbackOptions(false);
       setMessages((prev) => [...prev, { text: message, sender: "user" }]);
+      const userMsg = message;
       setMessage("");
 
-      // Simulate bot response
-      setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          { text: "This is an auto-reply from ChatFPT!", sender: "bot" },
-        ]);
-        setIsWaitingForResponse(false);
-        setShowRating(true);
-      }, 1000);
+      if (!showChat) setShowChat(true);
+
+      const botReply = await fetchBotResponse(userMsg);
+      setMessages((prev) => [...prev, { text: botReply, sender: "bot" }]);
+      setIsWaitingForResponse(false);
+      setShowRating(true);
     }
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey && !e.isComposing) {
       e.preventDefault();
-      if (!showChat) {
-        handleSendInitial();
-      } else {
-        handleSendChat();
-      }
+      sendMessage();
     }
   };
 
@@ -113,13 +107,8 @@ const ChatInput = () => {
     }
   };
 
-  const handleMoreClick = () => {
-    setShowPopup(true);
-  };
-
-  const handleClosePopup = () => {
-    setShowPopup(false);
-  };
+  const handleMoreClick = () => setShowPopup(true);
+  const handleClosePopup = () => setShowPopup(false);
 
   const handleSubmitFeedback = () => {
     console.log("Feedback submitted:", {
@@ -129,9 +118,8 @@ const ChatInput = () => {
     setShowPopup(false);
     setShowFeedbackOptions(false);
     setShowRating(false);
-
-    // Show thank you message for 3 seconds
     setShowThankYouMessage(true);
+
     setTimeout(() => {
       setShowThankYouMessage(false);
     }, 3000);
@@ -140,7 +128,6 @@ const ChatInput = () => {
     setFeedbackText("");
   };
 
-  // New function to handle single feedback option selection and auto-submit
   const handleSingleFeedbackSelection = (option) => {
     setSelectedFeedback([option]);
     setTimeout(() => {
@@ -148,15 +135,9 @@ const ChatInput = () => {
     }, 100);
   };
 
-  // Helper function to group messages by sender for better spacing
   const renderMessages = () => {
     return messages.map((msg, index) => {
       const bubbleClass = msg.sender === "user" ? "user-bubble" : "bot-bubble";
-
-      // Determine if this is the first message in a series from the same sender
-      const isFirstInSeries =
-        index === 0 || messages[index - 1].sender !== msg.sender;
-
       return (
         <div key={index} className={`chat-message-bubble ${bubbleClass}`}>
           {msg.text}
@@ -182,10 +163,8 @@ const ChatInput = () => {
               disabled={isWaitingForResponse}
             />
             <button
-              className={`send-button ${
-                isWaitingForResponse ? "disabled" : ""
-              }`}
-              onClick={handleSendInitial}
+              className={`send-button ${isWaitingForResponse ? "disabled" : ""}`}
+              onClick={sendMessage}
               disabled={isWaitingForResponse}
             >
               <FaPaperPlane />
@@ -195,18 +174,11 @@ const ChatInput = () => {
       ) : (
         <>
           <h2 className="chat-heading">ChatFPT</h2>
-          <div 
-            className="chat-message-list scrollable" 
-            ref={messageListRef}
-            style={{ height: "400px" }} // Fixed height
-          >
+          <div className="chat-message-list scrollable" ref={messageListRef} style={{ height: "400px" }}>
             {renderMessages()}
-
             {isWaitingForResponse && (
               <div className="chat-message-bubble bot-bubble typing-indicator">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
               </div>
             )}
           </div>
@@ -220,9 +192,7 @@ const ChatInput = () => {
               <div className="rating-container">
                 <span>How was the answer?</span>
                 <button onClick={() => handleRatingClick("thumbs-up")}>👍</button>
-                <button onClick={() => handleRatingClick("thumbs-down")}>
-                  👎
-                </button>
+                <button onClick={() => handleRatingClick("thumbs-down")}>👎</button>
                 <button onClick={handleMoreClick}>More</button>
               </div>
             )}
@@ -232,17 +202,13 @@ const ChatInput = () => {
                 {feedbackOptions.slice(0, 5).map((option, index) => (
                   <button
                     key={index}
-                    className={`feedback-option ${
-                      selectedFeedback.includes(option) ? "selected" : ""
-                    }`}
+                    className={`feedback-option ${selectedFeedback.includes(option) ? "selected" : ""}`}
                     onClick={() => handleSingleFeedbackSelection(option)}
                   >
                     {option}
                   </button>
                 ))}
-                <button className="feedback-option" onClick={handleMoreClick}>
-                  More...
-                </button>
+                <button className="feedback-option" onClick={handleMoreClick}>More...</button>
               </div>
             )}
           </div>
@@ -251,17 +217,13 @@ const ChatInput = () => {
             <div className="popup">
               <div className="popup-content">
                 <h3>Provide additional feedback</h3>
-                <button className="popup-close" onClick={handleClosePopup}>
-                  <FaTimes />
-                </button>
+                <button className="popup-close" onClick={handleClosePopup}><FaTimes /></button>
 
                 <div className="feedback-options-container">
                   {feedbackOptions.map((option, index) => (
                     <button
                       key={index}
-                      className={`feedback-option-button ${
-                        selectedFeedback.includes(option) ? "selected" : ""
-                      }`}
+                      className={`feedback-option-button ${selectedFeedback.includes(option) ? "selected" : ""}`}
                       onClick={() => handleFeedbackOptionClick(option)}
                     >
                       {option}
@@ -276,10 +238,7 @@ const ChatInput = () => {
                   rows="4"
                 />
 
-                <button
-                  className="submit-button"
-                  onClick={handleSubmitFeedback}
-                >
+                <button className="submit-button" onClick={handleSubmitFeedback}>
                   Submit
                 </button>
               </div>
@@ -290,11 +249,7 @@ const ChatInput = () => {
             <textarea
               ref={textareaRef}
               className="chat-textarea"
-              placeholder={
-                isWaitingForResponse
-                  ? "Đang chờ phản hồi..."
-                  : "Hỏi bất kỳ điều gì..."
-              }
+              placeholder={isWaitingForResponse ? "Đang chờ phản hồi..." : "Hỏi bất kỳ điều gì..."}
               rows="1"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
@@ -302,10 +257,8 @@ const ChatInput = () => {
               disabled={isWaitingForResponse}
             />
             <button
-              className={`send-button ${
-                isWaitingForResponse ? "disabled" : ""
-              }`}
-              onClick={handleSendChat}
+              className={`send-button ${isWaitingForResponse ? "disabled" : ""}`}
+              onClick={sendMessage}
               disabled={isWaitingForResponse}
             >
               <FaPaperPlane />
