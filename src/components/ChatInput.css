@@ -100,32 +100,22 @@
 }
 
 .scrollable {
-  scrollbar-width: thin;
-  scrollbar-color: #bbb transparent;
+  overflow: auto; 
+  scrollbar-width: none; 
 }
 
 .scrollable::-webkit-scrollbar {
-  width: 6px;
-}
-
-.scrollable::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.scrollable::-webkit-scrollbar-thumb {
-  background-color: #bbb;
-  border-radius: 10px;
+  display: none; 
 }
 
 .chat-message-bubble {
-  margin-bottom: 20px; /* Increased from 10px to 20px */
-  padding: 12px; /* Increased from 8px to 12px for more internal spacing */
+  margin-bottom: 20px; 
+  padding: 12px; 
   border-radius: 6px;
   max-width: 70%;
   word-wrap: break-word;
 }
 
-/* Add different spacing for user vs bot bubbles */
 .user-bubble {
   background: #007bff;
   color: #fff;
