@@ -100,17 +100,17 @@
 }
 
 .scrollable {
-  overflow: auto; 
-  scrollbar-width: none; 
+  overflow: auto;
+  scrollbar-width: none;
 }
 
 .scrollable::-webkit-scrollbar {
-  display: none; 
+  display: none;
 }
 
 .chat-message-bubble {
-  margin-bottom: 20px; 
-  padding: 12px; 
+  margin-bottom: 20px;
+  padding: 12px;
   border-radius: 6px;
   max-width: 70%;
   word-wrap: break-word;
@@ -279,7 +279,7 @@
 }
 
 .popup button {
-  background-color: #007bff;
+  background-color: #6290c4;
   color: white;
   border: none;
   padding: 8px 16px;

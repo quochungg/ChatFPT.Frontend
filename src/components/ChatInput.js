@@ -17,16 +17,14 @@ const ChatInput = () => {
   const textareaRef = useRef(null);
 
   const feedbackOptions = [
-    "Code was incorrect",
-    "Shouldn't have used Memory",
-    "Don't like the style",
-    "Not factually correct",
-    "Didn't fully follow instructions",
-    "Refused when it shouldn't have",
-    "Being lazy",
-    "Unsafe or problematic",
-    "Biased",
-    "Other",
+    "Thông tin không chính xác",
+    "Trả lời chưa đầy đủ",
+    "Câu trả lời không rõ ràng",
+    "Không theo đúng yêu cầu",
+    "Phản hồi không hợp lý",
+    "Chatbot không hiểu đúng câu hỏi",
+    "Thiếu thông tin cần thiết",
+    "Trả lời thiếu chi tiết",
   ];
 
   useEffect(() => {
@@ -190,20 +188,20 @@ const ChatInput = () => {
           </div>
 
           {showThankYouMessage && (
-            <div className="thank-you-message">Thanks for your feedback!</div>
+            <div className="thank-you-message">Cảm ơn phản hồi của bạn!</div>
           )}
 
           <div className="controls-container">
             {showRating && !showThankYouMessage && (
               <div className="rating-container">
-                <span>How was the answer?</span>
+                <span>Câu trả lời thế nào?</span>
                 <button onClick={() => handleRatingClick("thumbs-up")}>
                   👍
                 </button>
                 <button onClick={() => handleRatingClick("thumbs-down")}>
                   👎
                 </button>
-                <button onClick={handleMoreClick}>More</button>
+                <button onClick={handleMoreClick}>Khác</button>
               </div>
             )}
 
@@ -221,7 +219,7 @@ const ChatInput = () => {
                   </button>
                 ))}
                 <button className="feedback-option" onClick={handleMoreClick}>
-                  More...
+                  Khác...
                 </button>
               </div>
             )}
@@ -230,7 +228,7 @@ const ChatInput = () => {
           {showPopup && (
             <div className="popup">
               <div className="popup-content">
-                <h3>Provide additional feedback</h3>
+                <h3>Cung cấp thêm phản hồi</h3>
                 <button className="popup-close" onClick={handleClosePopup}>
                   <FaTimes />
                 </button>
@@ -250,7 +248,8 @@ const ChatInput = () => {
                 </div>
 
                 <textarea
-                  placeholder="(Optional) Feel free to add specific details"
+                  placeholder="(Optional) Hãy thoải mái thêm thông tin chi tiết cụ thể
+"
                   value={feedbackText}
                   onChange={(e) => setFeedbackText(e.target.value)}
                   rows="4"
