@@ -43,25 +43,26 @@ const ChatInput = () => {
 
   const fetchBotResponse = async (userMessage) => {
     try {
-      const response = await fetch(
-        `https://chatfpt.azurewebsites.net/api/ai/query?question=${encodeURIComponent(
-          userMessage
-        )}`,
-        {
-          method: "POST",
-          headers: {
-            Accept: "*/*",
-          },
-        }
-      );
+        const response = await fetch(
+            `https://chatfpt.azurewebsites.net/api/ai/query?question=${encodeURIComponent(userMessage)}`,
+            {
+                method: "POST",
+                headers: {
+                    Accept: "*/*",
+                },
+            }
+        );
 
-      const text = await response.text();
-      return text;
+        const data = await response.json();
+        
+        // Chỉ lấy nội dung trả lời từ chatbot
+        return data?.data?.content || "Không nhận được phản hồi phù hợp.";
     } catch (error) {
-      console.error("Error fetching response:", error);
-      return "Đã có lỗi xảy ra. Vui lòng thử lại sau.";
+        console.error("Lỗi khi lấy phản hồi:", error);
+        return "Đã có lỗi xảy ra. Vui lòng thử lại sau.";
     }
-  };
+};
+
 
   const sendMessage = async () => {
     if (message.trim() && !isWaitingForResponse) {
