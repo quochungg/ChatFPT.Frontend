@@ -3,13 +3,12 @@ import { auth, provider, signInWithPopup, signOut } from "../firebaseConfig";
 import { HiMenuAlt3 } from "react-icons/hi";
 import "./Header.css";
 import { FcGoogle } from "react-icons/fc";
-import { FaSignOutAlt } from "react-icons/fa";  // Import icon "sign out"
+import { FaSignOutAlt } from "react-icons/fa";
 
 const Header = ({ toggleSidebar }) => {
   const [user, setUser] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
 
-  // Kiểm tra người dùng khi trang được load
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -37,7 +36,7 @@ const Header = ({ toggleSidebar }) => {
         setUser(null);
         localStorage.removeItem("user");
         localStorage.removeItem("token");
-        setShowDropdown(false); // Ẩn dropdown khi đăng xuất
+        setShowDropdown(false); 
       })
       .catch((error) => console.error("Lỗi đăng xuất:", error));
   };
