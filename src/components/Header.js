@@ -44,7 +44,7 @@ const Header = ({ toggleSidebar }) => {
   return (
     <header className="chat-header">
       <div className="left-section">
-        <HiMenuAlt3 className="sidebar-toggle" onClick={toggleSidebar} />
+        {/* <HiMenuAlt3 className="sidebar-toggle" onClick={toggleSidebar} /> */}
         <h3 className="chat-title">ChatFPT</h3>
       </div>
 
